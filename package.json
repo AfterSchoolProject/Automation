@@ -1,0 +1,14 @@
+{
+  "name": "angellist_application_bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "login_check.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "nightmare": "^2.10.0"
+  }
+}
