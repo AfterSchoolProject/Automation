@@ -13,7 +13,14 @@ const login_check = () => {
     .wait(2000)
     .click('li.hide_when_handheld.u-inlineBlock.u-vAlignTop > a')
     .wait(10000)
-    // .evaluate(() => document.querySelectorAll('.u-uncoloredLink')[0].text)
+    .evaluate(() => {
+      const a = document.querySelectorAll('.title > a');
+      const links = [];
+      for (let i = 0; i < a.length; i++) {
+        links.push(a[i].href);
+      }
+      return links;
+    })
     .end()
     .then(result => console.log(`Finished ${result}`));
 };
