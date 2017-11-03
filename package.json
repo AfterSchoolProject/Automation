@@ -9,6 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "nightmare": "^2.10.0"
+    "nightmare": "^2.10.0",
+    "promise": "^8.0.1",
+    "vo": "^4.0.2"
   }
 }
