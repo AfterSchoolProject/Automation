@@ -2,6 +2,7 @@ const Nightmare = require('nightmare');
 const Promise = require('promise');
 const vo = require('vo');
 const coverLetter = require('./cover_letter.js');
+const config = require('./config.js');
 
 const nightmare = Nightmare({ show: true, executionTimeout: 600000 });
 
@@ -14,29 +15,32 @@ const testLinks = [
 ];
 
 function* applyToJobs(linksArray){
-
   console.log('Testing apply');
 
   yield nightmare
-    .goto('https://angel.co/login')
+    .goto(config.loginLink)
     .wait(2000)
-    .type('input#user_email', 'adrivero89@gmail.com')
-    .type('input#user_password', 'A@dRian89')
-    .click('input[value="Log In"]')
+    .type(config.emailInput, config.email)
+    .type(config.passwordInput, config.password)
+    .click(config.loginBtn)
     .wait(3000);
 
   for (let i = 0; i < linksArray.length; i++){
-    yield nightmare.goto(linksArray[i])
-    .wait(3000)
-    .exists('.buttons.js-apply.applicant-flow-dropdown > a')
-    .click('.buttons.js-apply.applicant-flow-dropdown > a')
-    .wait(3000)
-    .catch(error => {
-      console.log('Already applied:', error);
-    });
+    yield nightmare
+      .goto(linksArray[i])
+      .wait(3000)
+      .exists(config.applyBtn)
+      .click(config.applyBtn)
+      .wait(3000)
+      .insert(config.noteArea, coverLetter())
+      .wait(3000)
+      .catch(error => {
+        console.log('Already applied:', error);
+      });
   }
 
-  yield nightmare.evaluate(() => {})
+  yield nightmare
+    .evaluate(() => {})
     .then(result => {});
     // .goto(testLink)
     // .wait(3000)
@@ -46,10 +50,8 @@ function* applyToJobs(linksArray){
     // });
 }
 
-vo(applyToJobs(testLinks))(function(err, result){
+vo(applyToJobs(testLinks))(function (err, res) {
   if (err) { throw err; }
 });
 
-function checkIfApplied(){
-  
-}
+module.exports = applyToJobs;
