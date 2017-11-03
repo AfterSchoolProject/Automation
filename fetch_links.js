@@ -12,7 +12,7 @@ const vo = require('vo');
 const nightmare = Nightmare({show: true, executionTimeout: 600000});
 
 // const fetchLinks = () => {
-function* fetchLinks(){
+function fetchLinks(){
   // yield login(auth.email, auth.password);
   console.log("Fetching application links...");
   
@@ -24,7 +24,7 @@ function* fetchLinks(){
   //   .click(config.loginBtn)
   //   .wait(3000);
 
-  yield nightmare
+  return nightmare
     .click(config.jobsBtn)
     .wait(5000)
     .click(config.removeFilterBtn) // 3 clicks to clear all filters
