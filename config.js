@@ -19,3 +19,4 @@ exports.applyBtn = '.buttons.js-apply.applicant-flow-dropdown > a';
 exports.noteArea = 'div.container > textarea';
 exports.jobTitle = '.job-title';
 exports.companyName = '.startup-title';
+exports.sendApplication = 'button:contains("Send Application")';

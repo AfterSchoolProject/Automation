@@ -44,18 +44,6 @@ function* fetchLinks(window, scrollDelay){
           }        
         }, 5000);
       });
-      // const scroll =  new Promise(function(resolve, reject){
-      //   const scrollInterval = setInterval(() => {
-      //     {
-      //       clearInterval(scrollInterval);
-      //       console.log('Scroll reached end');
-      //       resolve();
-      //     }
-      //     else {
-      //       window.scrollTo(0, 1000000000000000000);
-      //     }
-      //   }, 3000);
-      // });
 
       // Get all the links filtering for job title.
       return scroll.then(() => {
