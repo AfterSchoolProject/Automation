@@ -10,7 +10,7 @@ const nightmare = Nightmare({
   executionTimeout: 600000,
   waitTimeout: 60000000,
   alwaysOnTop: false,
-  openDevTools: { mode: 'detach' }
+  // openDevTools: { mode: 'detach' }
 }); 
 
 function* automateApplications(){

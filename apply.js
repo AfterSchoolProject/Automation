@@ -14,6 +14,7 @@ function* applyToJobs(window, linksArray){
   console.log('Starting to apply...');
 
   for (let i = 0; i < linksArray.length; i++){
+    console.log('Applying to company: ', i);
     yield window
       .goto(linksArray[i])
       .wait(3000)
@@ -28,10 +29,6 @@ function* applyToJobs(window, linksArray){
         console.log('Already applied:', error);
       });
   }
-
-  // yield window
-  //   .evaluate(() => {})
-  //   .then(result => {});
 }
 
 module.exports = applyToJobs;
