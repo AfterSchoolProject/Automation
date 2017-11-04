@@ -7,6 +7,7 @@ exports.loginBtn = 'input[value = "Log In"]';
 // Job Listings
 exports.jobsBtn = 'li.hide_when_handheld.u-inlineBlock.u-vAlignTop > a';
 exports.removeFilterBtn = '.remove-filter.delete';
+exports.locationMenu = 'div[data-menu="locations"]';
 exports.locationFilterBtn = 'div[data-value=';
 exports.keywordSearchInput = '.search-box';
 exports.keywordInput = '.input.keyword-input';

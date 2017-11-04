@@ -5,14 +5,16 @@ const config = require('./config.js');
 
 // TEST ONLY /////////////////////////////
 // const login = require('./login.js');
-// const auth = require('./authentication.js');
+const auth = require('./authentication.js');
 const vo = require('vo');
 // TEST ONLY /////////////////////////////
 
 const nightmare = Nightmare({show: true, executionTimeout: 600000});
 
+// vo(fetchLinks)();
+
 // const fetchLinks = () => {
-function fetchLinks(){
+function* fetchLinks(window){
   // yield login(auth.email, auth.password);
   console.log("Fetching application links...");
   
@@ -24,13 +26,15 @@ function fetchLinks(){
   //   .click(config.loginBtn)
   //   .wait(3000);
 
-  return nightmare
+  return yield window
+    // .goto('https://angel.co/');
     .click(config.jobsBtn)
     .wait(5000)
     .click(config.removeFilterBtn) // 3 clicks to clear all filters
     .click(config.removeFilterBtn)
     .click(config.removeFilterBtn)
-    .click(`${config.locationFilterBtn}"${filters.locationFilter}"]`)
+    .click(config.locationMenu)
+    // .click(`${config.locationFilterBtn}"${filters.locationFilter}"]`)
     .click(config.keywordSearchInput)
     .type(config.keywordInput, `${filters.jobTitle}\u000d`)
     .wait(5000)
@@ -79,6 +83,7 @@ function fetchLinks(){
     });
 }
 
+
 // vo(fetchLinks())(function (err, res) {
 //   if (err) { throw err; }
 // });
@@ -86,7 +91,7 @@ function fetchLinks(){
 
 
 // const fetchLinks = () => {
-//   console.log('Attempting login...');
+//   console.log('Attempting login...')
 
 //   return nightmare
 //     .goto(config.loginLink)
