@@ -8,11 +8,9 @@ const Nightmare = require('nightmare');
 const nightmare = Nightmare({ show: true, executionTimeout: 600000 });
 
 function* automateApplications(){
-  yield vo(attemptLogin)(nightmare, auth.email, auth.password); // Login to AngelList
+  yield attemptLogin(nightmare, auth.email, auth.password); // Login to AngelList
 
-  // yield attemptLogin(auth.email, auth.password); // Login to AngelList
-
-  const links = yield vo(fetchLinks)(nightmare); // Get all links for matching title
+  const links = yield fetchLinks(nightmare); // Get all links for matching title
 
   // yield applyToJobs(links);
 }
