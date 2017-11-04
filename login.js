@@ -10,8 +10,8 @@ function* attemptLogin(window, email, password){
   yield window
     .goto(config.loginLink)
     .wait(2000)
-    .type(config.emailInput, email)
-    .type(config.passwordInput, password)
+    .insert(config.emailInput, email)
+    .insert(config.passwordInput, password)
     .click(config.loginBtn)
     .wait(3000);
 }

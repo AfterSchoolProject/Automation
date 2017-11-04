@@ -1,9 +1,14 @@
 const LOCATION = 0;
 
 const searchLocations = [
-  '1692-San Francisco, CA',
-  '1814-Sacramento, CA'
+  'San Francisco',
+  'Sacramento'
 ];
+
+// const searchLocations = [
+//   '1692-San Francisco, CA',
+//   '1814-Sacramento, CA'
+// ];
 
 const searchPositions = [
   'Software Engineer',

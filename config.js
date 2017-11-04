@@ -8,6 +8,8 @@ exports.loginBtn = 'input[value = "Log In"]';
 exports.jobsBtn = 'li.hide_when_handheld.u-inlineBlock.u-vAlignTop > a';
 exports.removeFilterBtn = '.remove-filter.delete';
 exports.locationMenu = 'div[data-menu="locations"]';
+// exports.locationInput = '.input.location-input.ui-autocomplete-input.ui-autocomplete-loading';
+exports.locationInput = 'input.location-input.ui-autocomplete-input';
 exports.locationFilterBtn = 'div[data-value=';
 exports.keywordSearchInput = '.search-box';
 exports.keywordInput = '.input.keyword-input';

@@ -4,8 +4,12 @@ const attemptLogin = require('./login.js');
 const auth = require('./authentication.js');
 // const applyToJobs = require('./apply.js');
 const Nightmare = require('nightmare');
-
-const nightmare = Nightmare({ show: true, executionTimeout: 600000 });
+const nightmare = Nightmare({
+  show: true,
+  executionTimeout: 600000,
+  alwaysOnTop: false
+  // openDevTools: { mode: 'detach' }
+}); 
 
 function* automateApplications(){
   yield attemptLogin(nightmare, auth.email, auth.password); // Login to AngelList
