@@ -2,50 +2,72 @@ const Nightmare = require('nightmare');
 const Promise = require('promise');
 const filters = require('./job_filters.js');
 const config = require('./config.js');
+const util = require('./util.js');
 
-function* fetchLinks(window){
+function* fetchLinks(window, scrollDelay){
   console.log("Fetching application links...");
 
+  const excludeKeywords = filters.excludeKeywords;
+  
   return yield window
     .click(config.jobsBtn)
-    .wait(5000)
+    .wait(config.removeFilterBtn) // Wait until the page loads with filters
     .click(config.removeFilterBtn) // 3 clicks to clear all filters
     .click(config.removeFilterBtn)
     .click(config.removeFilterBtn)
     .mouseover(config.locationMenu)
     .wait(200)
     .type(config.locationInput, `${filters.locationFilter}\u000d`)
-    // .wait(1000)
     .click(config.locationInput)
     .type(config.locationInput, '\u000d')
-    .wait(1000)
-    // .click(`${config.locationFilterBtn}"${filters.locationFilter}"]`)
-    .click(config.keywordSearchInput)
-    .type(config.keywordInput, `${filters.jobTitle}\u000d`)
+    .click(config.locationInput)
+    .type(config.locationInput, '\u000d')
+    // .wait(1000)
+    // .click(config.keywordSearchInput)
+    // .type(config.keywordInput, `${filters.jobTitle}\u000d`)
     .wait(5000)
-    .evaluate(() => {
-      console.log("Scroll starting...");
-
+    .evaluate(excludeKeywords => {
+      console.log("Scroll starting...");      
       // Scroll to the end of the page to expose all job posts
-      const scroll =  new Promise((resolve, reject) => {
+      const scroll = new Promise(function(resolve, reject){
+        const getRandomInt = (min, max) => {
+          return Math.floor(Math.random() * (max - min + 1)) + min;
+        };
+
         const scrollInterval = setInterval(() => {
-          window.scrollTo(0, 1000000000000000000);
-          if (document.querySelector('.end.hidden.section').style.display === 'block') {
-            clearInterval(scrollInterval);
-            resolve();
+          if (document.querySelector('.end.hidden.section').style.display !== 'block') {
+            setTimeout(() => window.scrollTo(0, 100000000000), getRandomInt(3000, 5000));
           }
-        }, 2000);
+          else { 
+            clearInterval(scrollInterval);
+            resolve(); 
+          }        
+        }, 5000);
       });
+      // const scroll =  new Promise(function(resolve, reject){
+      //   const scrollInterval = setInterval(() => {
+      //     {
+      //       clearInterval(scrollInterval);
+      //       console.log('Scroll reached end');
+      //       resolve();
+      //     }
+      //     else {
+      //       window.scrollTo(0, 1000000000000000000);
+      //     }
+      //   }, 3000);
+      // });
 
       // Get all the links filtering for job title.
       return scroll.then(() => {
+        console.log("Grabbing all links...");
+
         const links = [];
         const linksSelector = document.querySelectorAll('.title > a');
-
+        
         for (let i = 0; i < linksSelector.length; i++) {
           // Job title isn't valid if it contains any of the filter keywords
           let isTitleValid = true;
-          filters.excludeKeywords.forEach(keyword => {
+          excludeKeywords.forEach(keyword => {
             if (linksSelector[i].text
                 .toLowerCase()
                 .includes(keyword)) { 
@@ -60,83 +82,14 @@ function* fetchLinks(window){
         }
 
         return links;
+      }).catch(error => { 
+        console.log(error);
+        return error; 
       });
-    })
+    }, excludeKeywords)
     .then(result => {
-      console.log("End reached");
       return result;
-    });
+    }).catch(error => console.log('Error getting links:', error));
 }
-
-
-// vo(fetchLinks())(function (err, res) {
-//   if (err) { throw err; }
-// });
-
-
-
-// const fetchLinks = () => {
-//   console.log('Attempting login...')
-
-//   return nightmare
-//     .goto(config.loginLink)
-//     .wait(2000)
-//     .type(config.emailInput, config.email)
-//     .type(config.passwordInput, config.password)
-//     .click(config.loginBtn)
-//     .wait(3000)
-//     .click(config.jobsBtn)
-//     .wait(5000)
-//     .click(config.removeFilterBtn) // 3 clicks to clear all filters
-//     .click(config.removeFilterBtn)
-//     .click(config.removeFilterBtn)
-//     .click(`${config.locationFilterBtn}"${filters.locationFilter}"]`)
-//     .click(config.keywordSearchInput)
-//     .type(config.keywordInput, `${filters.jobTitle}\u000d`)
-//     .wait(5000)
-//     .evaluate(() => {
-//       console.log("Scroll starting...");
-
-//       // Scroll to the end of the page to expose all job posts
-//       const scroll =  new Promise((resolve, reject) => {
-//         const scrollInterval = setInterval(() => {
-//           window.scrollTo(0, 1000000000000000000);
-//           if (document.querySelector('.end.hidden.section').style.display === 'block') {
-//             clearInterval(scrollInterval);
-//             resolve();
-//           }
-//         }, 2000);
-//       });
-
-//       // Get all the links filtering for job title.
-//       return scroll.then(() => {
-//         const links = [];
-//         const linksSelector = document.querySelectorAll('.title > a');
-
-//         for (let i = 0; i < linksSelector.length; i++) {
-//           // Job title isn't valid if it contains any of the filter keywords
-//           let isTitleValid = true;
-//           filters.excludeKeywords.forEach(keyword => {
-//             if (linksSelector[i].text
-//                 .toLowerCase()
-//                 .includes(keyword)) { 
-//                   isTitleValid = false;
-//                   return;
-//                 }
-//           });
-
-//           if (isTitleValid) { 
-//             links.push(linksSelector[i].href);
-//           }
-//         }
-
-//         return links;
-//       });
-//     })
-//     .then(result => {
-//       console.log("End reached");
-//       return result;
-//     });
-// };
 
 module.exports =  fetchLinks;

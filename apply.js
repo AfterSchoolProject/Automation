@@ -1,12 +1,7 @@
-const Nightmare = require('nightmare');
 const Promise = require('promise');
 const vo = require('vo');
 const coverLetter = require('./cover_letter.js');
 const config = require('./config.js');
-
-const nightmare = Nightmare({ show: true, executionTimeout: 600000 });
-
-const testLink = 'https://angel.co/fullstack-labs/jobs/233956-web-developer-software-engineer-mid-level-senior';
 
 const testLinks = [
   "https://angel.co/fullstack-labs/jobs/233956-web-developer-software-engineer-mid-level-senior",
@@ -14,19 +9,11 @@ const testLinks = [
   "https://angel.co/more-fitt/jobs/189741-lead-software-engineer"
 ];
 
-function* applyToJobs(linksArray){
-  console.log('Testing apply');
-
-  yield nightmare
-    .goto(config.loginLink)
-    .wait(2000)
-    .type(config.emailInput, config.email)
-    .type(config.passwordInput, config.password)
-    .click(config.loginBtn)
-    .wait(3000);
+function* applyToJobs(window, linksArray){
+  console.log('Start applying...');
 
   for (let i = 0; i < linksArray.length; i++){
-    yield nightmare
+    yield window
       .goto(linksArray[i])
       .wait(3000)
       .exists(config.applyBtn)
@@ -39,19 +26,9 @@ function* applyToJobs(linksArray){
       });
   }
 
-  yield nightmare
+  yield window
     .evaluate(() => {})
     .then(result => {});
-    // .goto(testLink)
-    // .wait(3000)
-    // .evaluate(() => {})
-    // .then(result => {
-
-    // });
 }
-
-vo(applyToJobs(testLinks))(function (err, res) {
-  if (err) { throw err; }
-});
 
 module.exports = applyToJobs;

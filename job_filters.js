@@ -1,4 +1,4 @@
-const LOCATION = 0;
+const LOCATION = 1;
 
 const searchLocations = [
   'San Francisco',
